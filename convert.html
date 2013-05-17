@@ -1,0 +1,33 @@
+<!-- http://www.gpsvisualizer.com/geocoder/ -->
+<meta charset="UTF-8" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+function parseThat(number) {
+	if (number && number.indexOf(",") >= 0) {
+		number = number.replace(",",".");
+	}
+	return parseFloat(number);
+}
+
+$.get('datensatz_hochschulwatch_3.html', function(data) {
+	$('body').html(data);
+	data=[];
+	$('tr').each(function() {
+		if ([$(this).children().get(0)])
+			data.push([
+				$(this).children().eq(4).html(),
+				parseThat($(this).children().eq(7).html()),
+				parseThat($(this).children().eq(8).html()),
+				parseThat($(this).children().eq(10).html()),
+				parseThat($(this).children().eq(11).html()),
+				$(this).children().eq(0).html(),
+				$(this).children().eq(1).html(),
+				$(this).children().eq(2).html()
+			]);
+	});
+	$('body').text(JSON.stringify(data));
+	$('body').html('hochschulen = '+$('body').html().replace(/\],\[/g,'],<br />[')+';');
+},"html");
+
+</script>
